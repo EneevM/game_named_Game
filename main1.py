@@ -1,6 +1,7 @@
 import random
 import pygame
 
+
 pygame.init()
 size = width, height = 800, 600
 screen = pygame.display.set_mode(size)
@@ -8,6 +9,10 @@ screen = pygame.display.set_mode(size)
 # шрифт
 arial_font = pygame.font.match_font('arial')
 arial_font_48 = pygame.font.Font(arial_font, 48)
+
+# музыка
+pygame.mixer.music.load('music/Arlekino.mp3')
+pygame.mixer.music.play(-1)
 
 
 class Game:
@@ -149,7 +154,7 @@ def main():
                 restart.move(pps / fps)
 
             gameover.print_res()
-            
+
         else:
             screen.fill(bg_color)
             game.update(screen)

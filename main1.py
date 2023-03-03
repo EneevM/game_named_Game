@@ -5,9 +5,13 @@ pygame.init()
 size = width, height = 800, 600
 screen = pygame.display.set_mode(size)
 
+# шрифт
+arial_font = pygame.font.match_font('arial')
+arial_font_48 = pygame.font.Font(arial_font, 48)
+
 
 class Game:
-    def __init__(self, ):
+    def __init__(self):
         self.fight_off = 0
         self.game_over = False
         self.speed = 8
@@ -70,10 +74,15 @@ class GameOver(pygame.sprite.Sprite):
         self.rect.x = - width
         self.rect.y = (height - self.image.get_height()) // 2
         self.pos_x = - width
+        self.fight_off = 0
 
     def move(self, coordinate):
         self.pos_x += coordinate
         self.rect.x = self.pos_x
+
+    def print_res(self):
+        game_over_text_res = arial_font_48.render(f'Your kill count: {self.fight_off}', True, (255, 255, 255))
+        screen.blit(game_over_text_res, [width / 2 - game_over_text_res.get_width() / 2, height / 3])
 
 
 class Home(GameOver):
@@ -138,6 +147,9 @@ def main():
                 home.move(pps / fps)
             if restart.rect.x < (width - restart.rect.width) / 2:
                 restart.move(pps / fps)
+
+            gameover.print_res()
+            
         else:
             screen.fill(bg_color)
             game.update(screen)

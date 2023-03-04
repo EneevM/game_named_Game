@@ -1,10 +1,6 @@
 import copy
 import random
 import sys
-import pygame
-from board import BOARD
-from records import Result
-from records import global_record
 
 
 import pygame

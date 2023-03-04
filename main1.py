@@ -1,5 +1,8 @@
+import copy
 import random
 import sys
+import pygame
+from board import BOARD
 
 
 import pygame
@@ -54,7 +57,7 @@ class Game:
             self.objects.append(arr.copy())
             arr.clear()
 
-        self.board = BOARD.copy()
+        self.board = copy.deepcopy(BOARD)
 
     def update(self, screen):
         global fight_off
@@ -186,9 +189,6 @@ class Home(GameOver):
     def move(self, coordinate):
         super().move(coordinate)
 
-    def react(self):
-        pass
-
 
 class Restart(GameOver):
     image = pygame.image.load('data/restart.png')
@@ -202,11 +202,9 @@ class Restart(GameOver):
     def move(self, coordinate):
         super().move(coordinate)
 
-    def react(self):
-        pass
-
 
 def main():
+    global fight_off
     pygame.display.set_caption('Game')
     pygame.mouse.set_visible(False)
 
@@ -240,10 +238,22 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN and game.game_over:
                 if home.rect.x <= event.pos[0] <= home.rect.x + home.rect.width and home.rect.y <= event.pos[1] \
                         <= home.rect.y + home.rect.height:
-                    home.react()
+                    pass
                 if restart.rect.x <= event.pos[0] <= restart.rect.x + restart.rect.width and restart.rect.y <= \
                         event.pos[1] <= restart.rect.y + restart.rect.height:
-                    restart.react()
+                    sprite_game_over = pygame.sprite.Group()
+                    gameover = GameOver(sprite_game_over)
+
+                    sprite_home = pygame.sprite.Group()
+                    home = Home(sprite_home)
+
+                    sprite_restart = pygame.sprite.Group()
+                    restart = Restart(sprite_restart)
+
+                    game = Game()
+                    pygame.mouse.set_visible(False)
+                    fight_off = 0
+
         if game.game_over:
             screen.fill(game_over_color)
             sprite_game_over.draw(screen)

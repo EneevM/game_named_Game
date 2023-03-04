@@ -22,7 +22,7 @@ fight_off = 0
 # рекорд
 record = 0
 
-pygame.mixer.music.load('data/Arlekino.mp3')
+pygame.mixer.music.load('data/music.mp3')
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.1)
 

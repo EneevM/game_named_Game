@@ -3,6 +3,8 @@ import random
 import sys
 import pygame
 from board import BOARD
+from records import Result
+from records import global_record
 
 
 import pygame
@@ -17,8 +19,12 @@ arial_font_48 = pygame.font.Font(arial_font, 30)
 
 fight_off = 0
 
+# рекорд
+record = 0
+
 pygame.mixer.music.load('data/Arlekino.mp3')
 pygame.mixer.music.play(-1)
+pygame.mixer.music.set_volume(0.1)
 
 
 class Game:
@@ -171,9 +177,6 @@ class GameOver(pygame.sprite.Sprite):
 
     def print_res(self):
         game_over_text_res = arial_font_48.render(f'Your earned points: {fight_off}', True, (255, 255, 255))
-        with open('record.txt', mode='w') as f:
-            f.write(f'{fight_off}')
-
         screen.blit(game_over_text_res, [width / 2 - game_over_text_res.get_width() / 2, height / 3 + 20])
 
 
@@ -238,7 +241,20 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN and game.game_over:
                 if home.rect.x <= event.pos[0] <= home.rect.x + home.rect.width and home.rect.y <= event.pos[1] \
                         <= home.rect.y + home.rect.height:
-                    pass
+                    punkts = [(width / 2 - 70, height / 2 - 70, 'Play', (8, 7, 7), (217, 206, 206), 0),
+                              (width / 2 - 110, height / 2, 'Records', (8, 7, 7), (217, 206, 206), 1)]
+                    begin_frame = Menu(punkts)
+                    begin_frame.menu()
+                    sprite_game_over = pygame.sprite.Group()
+                    gameover = GameOver(sprite_game_over)
+                    sprite_home = pygame.sprite.Group()
+                    home = Home(sprite_home)
+
+                    sprite_restart = pygame.sprite.Group()
+                    restart = Restart(sprite_restart)
+                    game = Game()
+                    pygame.mouse.set_visible(False)
+                    fight_off = 0
                 if restart.rect.x <= event.pos[0] <= restart.rect.x + restart.rect.width and restart.rect.y <= \
                         event.pos[1] <= restart.rect.y + restart.rect.height:
                     sprite_game_over = pygame.sprite.Group()
